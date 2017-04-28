@@ -2,18 +2,10 @@
 
 import sys
 from Stock import Stock
-from NasdaqTracker import NasdaqTracker
-from YahooFinanceTracker import YahooFinanceTracker
+from DataCollector.NasdaqTracker import NasdaqTracker
+from DataCollector.YahooFinanceTracker import YahooFinanceTracker
+from InvestmentStrategy.PersonalStrategy import PersonalStrategy
 
-def is_good_stock(stock):
-    return (stock.m_earnings_per_share != None
-            and stock.m_price_earnings_ratio != None
-            and float(stock.m_price_earnings_ratio) <= 20
-            and stock.m_dividend_yield != None
-            and float(stock.m_dividend_yield) >= 1
-            and stock.m_peg_ratio != None
-            and float(stock.m_peg_ratio) < 5 and float(stock.m_peg_ratio) > 0)
-    
 
 if __name__ == "__main__":
     #print get_pe_ratio("GOOG")
@@ -35,9 +27,10 @@ if __name__ == "__main__":
             nasdaq_stocks[symbol].m_peg_ratio = yahoo_stocks[symbol].m_peg_ratio
             nasdaq_stocks[symbol].m_dividend_yield = yahoo_stocks[symbol].m_dividend_yield
 
+    personal_strategy = PersonalStrategy()
     good_stocks = []
     for stock in nasdaq_stocks:
-        if is_good_stock( nasdaq_stocks[stock] ) :
+        if personal_strategy.stock_validation( nasdaq_stocks[stock] ) :
             good_stocks.append(nasdaq_stocks[stock])
 
     # Sorting
