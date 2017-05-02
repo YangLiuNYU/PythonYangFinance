@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import sys
-from Stock import Stock
+from Model.Stock import Stock
 from DataCollector.NasdaqTracker import NasdaqTracker
 from DataCollector.YahooFinanceTracker import YahooFinanceTracker
 from InvestmentStrategy.PersonalStrategy import PersonalStrategy
@@ -19,19 +19,20 @@ if __name__ == "__main__":
 
     yahoo_tracker = YahooFinanceTracker()
     yahoo_stocks = yahoo_tracker.get_data_from_yahoo(symbols)
-    
+
+    # Combine the stock information from Yahoo and Nasdaq together
     for symbol in yahoo_stocks:
         if symbol in nasdaq_stocks:
-            nasdaq_stocks[symbol].m_earnings_per_share = yahoo_stocks[symbol].m_earnings_per_share
-            nasdaq_stocks[symbol].m_price_earnings_ratio = yahoo_stocks[symbol].m_price_earnings_ratio
-            nasdaq_stocks[symbol].m_peg_ratio = yahoo_stocks[symbol].m_peg_ratio
-            nasdaq_stocks[symbol].m_dividend_yield = yahoo_stocks[symbol].m_dividend_yield
+            for attr, value in nasdaq_stocks[symbol].__dict__.iteritems():
+                if hasattr(yahoo_stocks[symbol], attr) == False or getattr(yahoo_stocks[symbol], attr) is None:
+                    if value is not None:
+                        setattr(yahoo_stocks[symbol], attr, value)
 
     personal_strategy = PersonalStrategy()
     good_stocks = []
-    for stock in nasdaq_stocks:
-        if personal_strategy.stock_validation( nasdaq_stocks[stock] ) :
-            good_stocks.append(nasdaq_stocks[stock])
+    for ticker in yahoo_stocks:
+        if personal_strategy.stock_validation( yahoo_stocks[ticker] ) :
+            good_stocks.append(yahoo_stocks[ticker])
 
     # Sorting
     good_stocks.sort(key=lambda x: x.m_peg_ratio, reverse=True)

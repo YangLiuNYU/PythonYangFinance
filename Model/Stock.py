@@ -13,7 +13,11 @@ class Stock:
         self.m_earnings_per_share = None
         self.m_peg_ratio = None
         self.m_dividend_yield = None
-
+        self.m_market_cap = None
+        self.m_cash_flow_per_share = None
+        self.m_share_outstading = None
+        self.m_trailing_twelve_months_sales = None
+        
     def to_json(self):
         """
         Serilization.
