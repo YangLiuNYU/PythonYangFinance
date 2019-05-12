@@ -45,4 +45,4 @@ if __name__ == "__main__":
     tracker = NasdaqTracker()
     stocks = tracker.pull_data()
     for symbol in stocks:
-        print stocks[symbol].to_json()
+        print(stocks[symbol].to_json())

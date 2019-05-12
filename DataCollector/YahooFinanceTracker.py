@@ -116,5 +116,5 @@ if __name__ == "__main__":
     tracker = YahooFinanceTracker()
     data = tracker.get_data_from_yahoo(["GOOG","FB","GILD","AAPL"])
     for symbol in data:
-        print data[symbol].to_json()
+        print(data[symbol].to_json())
     

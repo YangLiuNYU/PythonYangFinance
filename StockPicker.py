@@ -11,7 +11,7 @@ if __name__ == "__main__":
     #print get_pe_ratio("GOOG")
     nasdaq_tracker = NasdaqTracker()
     nasdaq_stocks = nasdaq_tracker.pull_data()
-    print "Total stocks : " + str(len(nasdaq_stocks))
+    print("Total stocks : " , str(len(nasdaq_stocks)))
 
     symbols = []
     for key in nasdaq_stocks:
@@ -38,8 +38,8 @@ if __name__ == "__main__":
     good_stocks.sort(key=lambda x: x.m_peg_ratio, reverse=True)
     
     for stock in good_stocks:
-        print stock.to_json()
+        print(stock.to_json())
 
         
-    print "Good stocks : " + str(len(good_stocks))
+    print("Good stocks : ", str(len(good_stocks)))
     sys.exit(0)
